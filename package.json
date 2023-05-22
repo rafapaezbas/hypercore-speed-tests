@@ -1,0 +1,20 @@
+{
+  "name": "hypercore-speed-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  },
+  "dependencies": {
+    "hypercore": "^10.9.2",
+    "hyperswarm": "^4.4.1",
+    "random-access-memory": "^6.2.0"
+  }
+}
