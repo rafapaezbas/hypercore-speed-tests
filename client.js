@@ -1,63 +1,33 @@
 const Hypercore = require('hypercore')
 const Hyperswarm = require('hyperswarm')
 const ram = require('random-access-memory')
+const { readFile } = require('fs/promises')
+const { configurations } = require('./lib/configuration')
 
-const keys = JSON.parse(process.argv[2])
-const range = false
+const range = true
 
 const main = async () => {
+  const keys = await JSON.parse(await readFile('/tmp/keys'))
   const swarm = new Hyperswarm()
+  const cores = []
 
-  const coreA = new Hypercore(ram, keys[0])
-  const coreB = new Hypercore(ram, keys[1])
-  const coreC = new Hypercore(ram, keys[2])
+  for (let i = 0; i < configurations.length; i++) {
+    const core = new Hypercore(ram, keys[i])
+    await core.ready()
+    swarm.join(core.discoveryKey)
+    cores.push(core)
+  }
 
-  const coreE = new Hypercore(ram, keys[3])
-  const coreF = new Hypercore(ram, keys[4])
-  const coreG = new Hypercore(ram, keys[5])
-
-  await coreA.ready()
-  await coreB.ready()
-  await coreC.ready()
-
-  await coreE.ready()
-  await coreF.ready()
-  await coreG.ready()
-
-  swarm.join(coreA.discoveryKey)
-  swarm.join(coreB.discoveryKey)
-  swarm.join(coreC.discoveryKey)
-
-  swarm.join(coreE.discoveryKey)
-  swarm.join(coreF.discoveryKey)
-  swarm.join(coreG.discoveryKey)
-
-  swarm.on('connection', (conn, peer) => {
-    coreA.replicate(conn)
-    coreB.replicate(conn)
-    coreC.replicate(conn)
-    coreE.replicate(conn)
-    coreF.replicate(conn)
-    coreG.replicate(conn)
+  swarm.on('connection', (conn) => {
+    cores.forEach(core => core.replicate(conn))
   })
 
   await swarm.flush()
 
-  console.log('Range', range)
-
-  console.log('1000 * 128')
-  await download(coreA, 1000, range)
-  console.log('1000 * 512')
-  await download(coreB, 1000, range)
-  console.log('1000 * 4096')
-  await download(coreC, 1000, range)
-
-  console.log('2000 * 128')
-  await download(coreE, 2000, range)
-  console.log('2000 * 512')
-  await download(coreF, 2000, range)
-  console.log('2000 * 4096')
-  await download(coreG, 2000, range)
+  for (let i = 0; i < configurations.length; i++) {
+    console.log(configurations[i].entries, '*', configurations[i].blockSize)
+    await download(cores[i], configurations[i].entries, range)
+  }
 
   process.exit()
 }

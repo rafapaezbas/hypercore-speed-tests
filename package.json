@@ -13,6 +13,7 @@
     "standard": "^17.0.0"
   },
   "dependencies": {
+    "hyperbee": "^2.10.3",
     "hypercore": "^10.9.2",
     "hyperswarm": "^4.4.1",
     "random-access-memory": "^6.2.0"

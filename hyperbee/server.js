@@ -3,25 +3,7 @@ const Hyperbee = require('hyperbee')
 const Hyperswarm = require('hyperswarm')
 const ram = require('random-access-memory')
 const { writeFile } = require('fs/promises')
-
-class Configuration {
-  constructor (entries, blockSize) {
-    this.entries = entries
-    this.blockSize = blockSize
-  }
-}
-
-const configurations = [
-  new Configuration(1000, 128),
-  new Configuration(1000, 512),
-  new Configuration(1000, 4096),
-  new Configuration(2000, 128),
-  new Configuration(2000, 512),
-  new Configuration(2000, 4096),
-  new Configuration(5000, 128),
-  new Configuration(5000, 512),
-  new Configuration(5000, 4096)
-]
+const { configurations } = require('../lib/configuration')
 
 const main = async () => {
   const cores = []
