@@ -18,7 +18,7 @@ const main = async () => {
     await bee.ready()
 
     for (let j = 0; j < configurations[i].entries; j++) {
-      await bee.put(Buffer.from(i.toString()), Buffer.alloc(configurations[i].blockSize))
+      await bee.put(Buffer.from(j.toString()), Buffer.alloc(configurations[i].blockSize))
     }
 
     cores.push(core)

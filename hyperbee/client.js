@@ -33,7 +33,7 @@ const main = async () => {
     console.log(configurations[i].entries, '*', configurations[i].blockSize)
     const start = Date.now()
     for (let j = 0; j < configurations[i].entries; j++) {
-      await bees[i].get(Buffer.from(i.toString()))
+      const entry = await bees[i].get(Buffer.from(j.toString()))
     }
     const elapsed = Date.now() - start
     console.log('elapsed', elapsed)
