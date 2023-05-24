@@ -33,10 +33,9 @@ const main = async () => {
     console.log(configurations[i].entries, '*', configurations[i].blockSize)
     const start = Date.now()
     for (let j = 0; j < configurations[i].entries; j++) {
-      const entry = await bees[i].get(Buffer.from(j.toString()))
+      await bees[i].get(Buffer.from(j.toString()))
     }
     // for await (const entry of bees[i].createReadStream({ gte: Buffer.from('0'), lt: Buffer.from(configurations[i].entries.toString()) })) {
-    }
     const elapsed = Date.now() - start
     console.log('elapsed', elapsed)
   }
