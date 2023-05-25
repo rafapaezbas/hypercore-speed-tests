@@ -151,3 +151,7 @@ await (core.download(range)).done()
 5000 * 4096
 9281ms, 10329ms, 10408ms
 ```
+
+### Note
+
+No difference found when using __const DEFAULT_MAX_INFLIGHT = 32__ and __const DEFAULT_MAX_INFLIGHT = 64__
